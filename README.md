@@ -1,6 +1,6 @@
 # 🔥 Flint
 
-**Flint** is an interpreted programming language implemented in **Java**. It is designed to be simple, expressive, and dynamically typed — making it a great tool for learning language design and implementation or building lightweight scripting capabilities into Java applications.
+**Flint** is an interpreted programming language implemented in **Java**. It is designed to be simple, expressive, and dynamically typed — making it a great tool for learning language design and implementation.
 
 ## 🚀 Features
 
@@ -22,8 +22,8 @@ Flint is built for:
 
 ```Flint
 // Declare variables
-let name = "Flint"
-let count = 42
+var name = "Flint"
+var count = 42
 
 // Define a function
 function greet(user) {
@@ -31,10 +31,10 @@ function greet(user) {
 }
 
 // Use arrays
-let list = [1, 2, 3, 4]
+var list = [1, 2, 3, 4]
 
 // Use objects
-let user = {
+var user = {
   name: "Alice",
   age: 30
 }
