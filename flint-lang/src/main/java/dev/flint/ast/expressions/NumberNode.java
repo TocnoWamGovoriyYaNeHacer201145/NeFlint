@@ -14,4 +14,8 @@ public class NumberNode extends ExpressionNode {
     public Object execute(ExecutionContext context) {
         return value; // Return the numeric value
     }
+
+    public String toString() {
+        return " NumberNode " + this.value;
+    }
 }

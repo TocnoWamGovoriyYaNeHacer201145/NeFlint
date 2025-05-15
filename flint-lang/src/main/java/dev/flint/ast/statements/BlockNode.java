@@ -7,13 +7,13 @@ import dev.flint.interpreter.ExecutionContext;
 
 // BlockNode class
 public class BlockNode extends StatementNode {
-    private final List<StatementNode> statements;
+    private final List<ASTNode> statements;
 
-    public BlockNode(List<StatementNode> statements) {
+    public BlockNode(List<ASTNode> statements) {
         this.statements = statements;
     }
 
-    public List<StatementNode> getStatements() {
+    public List<ASTNode> getStatements() {
         return statements;
     }
 

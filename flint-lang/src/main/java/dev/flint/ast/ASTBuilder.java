@@ -54,7 +54,7 @@ public class ASTBuilder {
         return new VarDeclarationNode(identifier.getValue(), value);
     }
 
-    public static BlockNode createBlockNode(List<StatementNode> statements) {
+    public static BlockNode createBlockNode(List<ASTNode> statements) {
         return new BlockNode(statements);
     }
 }

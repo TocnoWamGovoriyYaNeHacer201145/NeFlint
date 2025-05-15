@@ -14,6 +14,14 @@ public class BinaryOperationNode extends ExpressionNode {
         this.right = right;
     }
 
+    public ExpressionNode getLeft() {
+        return left;
+    }
+
+    public ExpressionNode getRight() {
+        return right;
+    }
+
     @Override
     public Object execute(ExecutionContext context) {
         Object leftValue = left.execute(context);
@@ -51,6 +59,4 @@ public class BinaryOperationNode extends ExpressionNode {
     public String toString() {
         return "(" + left + " " + operator + " " + right + ")";
     }
-
-    
 }

@@ -15,7 +15,7 @@ public class ExpressionParser {
     }
 
     public ExpressionNode parseExpression() {
-        return parseLogicalOr(); // Start with logical OR
+        return parseLogicalOr();
     }
 
     private ExpressionNode parseLogicalOr() {

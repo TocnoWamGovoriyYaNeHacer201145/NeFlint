@@ -18,9 +18,9 @@ public class StatementParser {
     }
 
     public BlockNode parseStatements() {
-        List<StatementNode> statements = new ArrayList<>();
+        List<ASTNode> statements = new ArrayList<>();
         while (!parser.isAtEnd()) {
-            statements.add( (StatementNode) parseStatement());
+            statements.add( parseStatement() );
         }
         return new BlockNode(statements);
     }
