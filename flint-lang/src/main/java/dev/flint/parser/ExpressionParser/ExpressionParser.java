@@ -81,7 +81,7 @@ public class ExpressionParser {
     private ExpressionNode parseMultiplication() {
         ExpressionNode node = parseUnary();
 
-        while (parser.match(TokenType.MULTIPLY, TokenType.DIVIDE)) {
+        while (parser.match(TokenType.MULTIPLY, TokenType.DIVIDE, TokenType.MODULO)) {
             Token operator = parser.previous();
             ExpressionNode right = parseUnary();
             node = new BinaryOperationNode(node, operator.getType(), right);

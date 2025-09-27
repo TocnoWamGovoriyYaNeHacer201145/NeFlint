@@ -8,6 +8,7 @@ import dev.flint.ast.expressions.BinaryOperationNode;
 import dev.flint.ast.expressions.ExpressionNode;
 import dev.flint.ast.expressions.NumberNode;
 import dev.flint.ast.statements.BlockNode;
+import dev.flint.interpreter.ExecutionContext;
 import dev.flint.lexer.Lexer;
 import dev.flint.lexer.Token;
 import dev.flint.parser.Parser;
@@ -37,7 +38,7 @@ public class App
     public static void main( String[] args )
     {
         System.out.println( "Hello World!" );
-        String program = "(2+3)*5";
+        String program = "(100%7||false)";
         Lexer l = new Lexer(program);
         List<Token> t = new ArrayList<>();
         t = l.tokenize();
@@ -45,8 +46,10 @@ public class App
         //     System.out.println(t.get(i));
         // }
         Parser p = new Parser(t);
-        
-        printTree(p.parse());
+        ASTNode root = p.parse();
+        ExecutionContext e = new ExecutionContext();
+        printTree(root);
+        System.out.println("---execution----" + root.execute(e));
     }
 }
 

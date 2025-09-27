@@ -105,7 +105,7 @@ public class Lexer {
     }
 
     private boolean isOperatorStart(char c) {
-        return "+-*/=!<>&|".indexOf(c) >= 0;
+        return "+-*/=!<>&|%".indexOf(c) >= 0;
     }
 
     private String readOperator() {
@@ -130,6 +130,7 @@ public class Lexer {
             case "+" -> TokenType.PLUS;
             case "-" -> TokenType.MINUS;
             case "*" -> TokenType.MULTIPLY;
+            case "%" -> TokenType.MODULO;
             case "/" -> TokenType.DIVIDE;
             case "&&" -> TokenType.AND;
             case "||" -> TokenType.OR;

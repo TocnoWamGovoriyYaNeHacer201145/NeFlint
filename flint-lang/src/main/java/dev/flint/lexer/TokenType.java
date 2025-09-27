@@ -23,6 +23,7 @@ public enum TokenType {
     MINUS,        // '-'
     MULTIPLY,     // '*'
     DIVIDE,       // '/'
+    MODULO,       // '%'
     EQUAL,        // '==' for equality comparison
     NOT_EQUAL,    // '!=' for inequality comparison
     LESS_THAN,    // '<'
