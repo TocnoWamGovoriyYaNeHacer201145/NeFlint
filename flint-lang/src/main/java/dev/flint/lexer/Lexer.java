@@ -48,8 +48,58 @@ public class Lexer {
                 continue;
             }
 
-            if (isOperatorStart(currentChar)) {
-                tokens.add(new Token(getOperatorTokenType(), readOperator()));
+            // Only treat '=' as operator if not followed by another '='
+            if (currentChar == '=') {
+                if (peekNext() == '=') {
+                    tokens.add(new Token(TokenType.EQUAL, "=="));
+                    advance(); advance();
+                } else {
+                    tokens.add(new Token(TokenType.ASSIGN, "="));
+                    advance();
+                }
+                continue;
+            }
+
+            // Only treat '!' as operator if not followed by '='
+            if (currentChar == '!') {
+                if (peekNext() == '=') {
+                    tokens.add(new Token(TokenType.NOT_EQUAL, "!="));
+                    advance(); advance();
+                } else {
+                    tokens.add(new Token(TokenType.NOT, "!"));
+                    advance();
+                }
+                continue;
+            }
+
+            // Handle && and ||
+            if ((currentChar == '&' && peekNext() == '&')) {
+                tokens.add(new Token(TokenType.AND, "&&"));
+                advance(); advance();
+                continue;
+            }
+            if ((currentChar == '|' && peekNext() == '|')) {
+                tokens.add(new Token(TokenType.OR, "||"));
+                advance(); advance();
+                continue;
+            }
+            // Handle <= and >=
+            if ((currentChar == '<' && peekNext() == '=')) {
+                tokens.add(new Token(TokenType.LESS_EQUAL, "<="));
+                advance(); advance();
+                continue;
+            }
+            if ((currentChar == '>' && peekNext() == '=')) {
+                tokens.add(new Token(TokenType.GREATER_EQUAL, ">="));
+                advance(); advance();
+                continue;
+            }
+            // Single-char operators
+            // Skip '=' here since it's already handled above
+            if (isOperatorStart(currentChar) && currentChar != '=') {
+                TokenType type = getOperatorTokenTypeSingle(currentChar);
+                tokens.add(new Token(type, String.valueOf(currentChar)));
+                advance();
                 continue;
             }
 
@@ -110,11 +160,44 @@ public class Lexer {
 
     private String readOperator() {
         StringBuilder operator = new StringBuilder();
-        while (isOperatorStart(currentChar)) {
+        // Special handling for '=': only allow one char unless '==' or '!='
+        if (currentChar == '=') {
             operator.append(currentChar);
             advance();
+            if (currentChar == '=') {
+                operator.append(currentChar);
+                advance();
+            }
+            return operator.toString();
         }
+        // Special handling for '!' (for '!=' and '!')
+        if (currentChar == '!') {
+            operator.append(currentChar);
+            advance();
+            if (currentChar == '=') {
+                operator.append(currentChar);
+                advance();
+            }
+            return operator.toString();
+        }
+        // Handle other multi-char operators (&&, ||, <=, >=)
+        if ((currentChar == '&' && peekNext() == '&') || (currentChar == '|' && peekNext() == '|') ||
+            (currentChar == '<' && peekNext() == '=') || (currentChar == '>' && peekNext() == '=')) {
+            operator.append(currentChar);
+            advance();
+            operator.append(currentChar);
+            advance();
+            return operator.toString();
+        }
+        // Single-char operators
+        operator.append(currentChar);
+        advance();
         return operator.toString();
+    }
+
+    private char peekNext() {
+        if (position + 1 >= input.length()) return '\0';
+        return input.charAt(position + 1);
     }
 
     private TokenType getOperatorTokenType() {
@@ -139,8 +222,22 @@ public class Lexer {
         };
     }
 
+    private TokenType getOperatorTokenTypeSingle(char c) {
+        return switch (c) {
+            case '=' -> TokenType.ASSIGN;
+            case '+' -> TokenType.PLUS;
+            case '-' -> TokenType.MINUS;
+            case '*' -> TokenType.MULTIPLY;
+            case '/' -> TokenType.DIVIDE;
+            case '%' -> TokenType.MODULO;
+            case '<' -> TokenType.LESS_THAN;
+            case '>' -> TokenType.GREATER_THAN;
+            default -> throw new RuntimeException("Unknown operator: " + c);
+        };
+    }
+
     private boolean isPunctuation(char c) {
-        return ";=(){}".indexOf(c) >= 0;
+        return ";(){}".indexOf(c) >= 0;
     }
 
     private TokenType getPunctuationTokenType() {

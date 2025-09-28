@@ -90,7 +90,7 @@ public class Parser {
     /**
      * Returns the current token.
      */
-    Token peek() {
+    public Token peek() {
         return tokens.get(current);
     }
 

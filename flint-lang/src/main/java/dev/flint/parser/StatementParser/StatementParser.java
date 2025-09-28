@@ -35,7 +35,13 @@ public class StatementParser {
         } else if (parser.match(TokenType.VAR)) {
             return parseVarDeclaration();
         } else if (parser.match(TokenType.IDENTIFIER)) {
-            return parseAssignment();
+            // If next token is ASSIGN, it's an assignment; otherwise, it's a variable usage (expression)
+            if (!parser.isAtEnd() && parser.peek().getType() == TokenType.ASSIGN) {
+                return parseAssignment();
+            } else {
+                // Previous token is the identifier, so return a VariableNode directly
+                return new dev.flint.ast.expressions.VariableNode(parser.previous().getValue());
+            }
         } else {
             return parser.getExpressionParser().parseExpression();
         }
@@ -71,12 +77,10 @@ public class StatementParser {
 
         StatementNode body = (StatementNode) parseStatement();
         return new WhileNode(condition, body);
-    }
-
-    private VarDeclarationNode parseVarDeclaration() {
-        parser.consume(TokenType.VAR, "Expected 'var' keyword.");
+    }    private VarDeclarationNode parseVarDeclaration() {
+        // 'VAR' already matched and advanced by match()
         Token identifier = parser.consume(TokenType.IDENTIFIER, "Expected variable name.");
-        parser.consume(TokenType.EQUAL, "Expected '=' after variable name.");
+        parser.consume(TokenType.ASSIGN, "Expected '=' after variable name.");
         ExpressionNode initializer = (ExpressionNode) parser.getExpressionParser().parseExpression();
         parser.consume(TokenType.SEMICOLON, "Expected ';' after variable declaration.");
         return new VarDeclarationNode(identifier.getValue(), initializer);
@@ -84,7 +88,7 @@ public class StatementParser {
 
     private VarAssignmentNode parseAssignment() {
         Token identifier = parser.previous();
-        parser.consume(TokenType.EQUAL, "Expected '=' after variable name.");
+        parser.consume(TokenType.ASSIGN, "Expected '=' after variable name.");
         ExpressionNode value = (ExpressionNode) parser.getExpressionParser().parseExpression();
         parser.consume(TokenType.SEMICOLON, "Expected ';' after assignment.");
         return new VarAssignmentNode(identifier, value);

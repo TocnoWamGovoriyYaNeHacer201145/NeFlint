@@ -1,4 +1,3 @@
-
 package dev.flint.parser.ExpressionParser;
 
 import dev.flint.ast.expressions.*;
@@ -100,7 +99,7 @@ public class ExpressionParser {
         return parsePrimary();
     }
 
-    private ExpressionNode parsePrimary() {
+    public ExpressionNode parsePrimary() {
         if (parser.match(TokenType.NUMBER)) {
             return new NumberNode(Double.parseDouble(parser.previous().getValue()));
         }
